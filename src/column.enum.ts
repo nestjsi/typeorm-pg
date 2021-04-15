@@ -1,5 +1,3 @@
-import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table } from "typeorm";
-
 /**
  * Column types used for @PrimaryGeneratedColumn() decorator.
  */
@@ -10,6 +8,7 @@ export enum ColumnPrimaryType {
   SmallInteger = "smallint",
   UUID = "uuid",
 }
+
 /**
  * @description Column types for PostgreSQL
  * @link https://typeorm.io/#/entities/column-types-for-postgres
@@ -135,19 +134,7 @@ export enum ColumnType {
   VariableChar = "varchar",
   XML = "xml",
 }
-export const ColumnOptionsExtra: {
-  readonly comment: "Extra data in JSON format";
-  readonly default: {};
-  readonly name: "extra";
-  readonly nullable: false;
-  readonly type: "json";
-};
-export const EMAIL_LENGTH_MAX: 254;
-export const EMAIL_LENGTH_MIN: 6;
-export const NAME_LENGTH_MAX: 99;
-export const NAME_LENGTH_MIN: 1;
-export const PASSWORD_LENGTH_MAX: 128;
-export const PASSWORD_LENGTH_MIN: 5;
+
 export enum ConstLength {
   EmailMax = 254,
   EmailMin = 6,
@@ -155,15 +142,4 @@ export enum ConstLength {
   NameMin = 1,
   PassMax = 128,
   PassMin = 5,
-}
-export const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
-export const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
-export const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
-export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
-  foreignKeyName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    referencedTablePath?: string,
-    referencedColumnNames?: string[],
-  ): string;
 }
