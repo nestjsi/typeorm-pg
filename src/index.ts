@@ -328,10 +328,11 @@ export class CustomNamingStrategy extends DefaultNamingStrategy implements Namin
   ): string {
     tableOrName = typeof tableOrName === "string" ? tableOrName : tableOrName.name;
     const foreignKeyName = columnNames.reduce(
-      (name, column) => `${name}__${column}`,
+      (name: string, column: string) => `${name}__${column}`,
       `${tableOrName}__${referencedTablePath}`,
     );
-    if (Array.from(foreignKeyName).length > 63) {
+    // Array.from(foreignKeyName).length > 63
+    if (foreignKeyName.length > 59) {
       return `FK__${cryptSha1(foreignKeyName)}`;
     } else {
       return `FK__${foreignKeyName}`;
