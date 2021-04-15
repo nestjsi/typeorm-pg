@@ -2,11 +2,13 @@ import * as crypto from "crypto";
 
 import { DefaultNamingStrategy, NamingStrategyInterface, Table } from "typeorm";
 
-function cryptSha1(text: string) {
+const cryptSha1 = (text: string): string => {
   const hash = crypto.createHash("sha1");
   hash.update(text);
   return hash.digest("hex");
-}
+};
+
+const stripPublic = (text: string): string => (text.startsWith("public.") ? text.substr(7) : text);
 
 export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   public foreignKeyName(
@@ -14,19 +16,19 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
     columnNames: string[],
     referencedTablePath?: string,
     __referencedColumnNames?: string[],
+    nameStartsWith: string = 'FK__',
   ): string {
-    let tableName = typeof tableOrName === "string" ? tableOrName : tableOrName.name;
-    if (tableName.startsWith("public.")) {
-      tableName = tableName.substr(7);
-    }
+    const tableName = stripPublic(typeof tableOrName === "string" ? tableOrName : tableOrName.name);
+    const tablePath = stripPublic(referencedTablePath || "");
     const foreignKeyName = columnNames.reduce(
-      (name: string, column: string) => `${name}__${column}`,
-      `${tableName}__${referencedTablePath}`,
+      (name: string, column: string) => `${stripPublic(name)}__${stripPublic(column)}`,
+      `${tableName}__${tablePath}`,
     );
-    if (foreignKeyName.length > 59) {
-      return `FK__${cryptSha1(foreignKeyName)}`;
+    const maxLength = 63 - nameStartsWith.length;
+    if (foreignKeyName.length > maxLength) {
+      return `${nameStartsWith}${cryptSha1(foreignKeyName)}`;
     } else {
-      return `FK__${foreignKeyName}`;
+      return `${nameStartsWith}${foreignKeyName}`;
     }
   }
 }

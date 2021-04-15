@@ -2,6 +2,10 @@
 
 ---
 
+## 0.0.4
+
+-   ♻️ `SafeNamingStrategy` - custom name for foreign key.
+
 ## 0.0.3
 
 -   ♻️ Rename `CustomNamingStrategy` to `SafeNamingStrategy`.
