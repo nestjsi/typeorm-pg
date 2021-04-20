@@ -2,6 +2,10 @@
 
 ---
 
+## 0.0.5
+
+-   ♻️ `SafeNamingStrategy` - custom name for relation constraint key.
+
 ## 0.0.4
 
 -   ♻️ `SafeNamingStrategy` - custom name for foreign key.

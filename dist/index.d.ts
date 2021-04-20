@@ -159,11 +159,37 @@ export enum ConstLength {
 export const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
 export const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
 export const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
+
 export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
-  foreignKeyName(
+  /**
+   * @param {Table|string} tableOrName
+   * @param {Array.<String>} columnNames
+   * @param {String=} referencedTablePath
+   * @param {Array.<String>=} referencedColumnNames
+   * @param {String=} [nameStartsWith="FK__"]
+   * @param {Boolean=} [stripPublicSchemaName=true]
+   * @returns {String}
+   */
+  public foreignKeyName(
     tableOrName: Table | string,
     columnNames: string[],
     referencedTablePath?: string,
     referencedColumnNames?: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
+  ): string;
+
+  /**
+   * @param {Table|string} tableOrName
+   * @param {Array.<String>} columnNames
+   * @param {String=} [nameStartsWith="REL__"]
+   * @param {Boolean=} [stripPublicSchemaName=true]
+   * @returns {String}
+   */
+  public relationConstraintName(
+    tableOrName: Table | string,
+    columnNames: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
   ): string;
 }
