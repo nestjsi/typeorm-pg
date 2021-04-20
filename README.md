@@ -2,6 +2,11 @@
 
 TypeORM PostgreSQL declarations and utilities.
 
+[![NPM Version][npm-version-img]][npm-version-url]
+[![NPM Downloads][npm-downloads-img]][npm-downloads-url]
+
+---
+
 ## Examples
 
 ### Safe naming strategy for TypeORM
@@ -69,3 +74,13 @@ import {
   // and more…
 } from '@nestjsi/typeorm-pg';
 ```
+
+---
+
+<!-- Badges -->
+
+[npm-version-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
+[npm-version-img]: https://npmjs.com/package/@nestjsi/typeorm-pg?&icon=npm&label=npm&color=DD3636
+[npm-downloads-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
+[npm-downloads-img]: https://badgen.net/npm/dt/@nestjsi/typeorm-pg?&icon=terminal&label=downloads&color=009688
+
