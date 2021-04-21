@@ -2,6 +2,10 @@
 
 ---
 
+## 0.0.5
+
+-   ♻️ `SafeNamingStrategy` - custom name for index key.
+
 ## 0.0.6
 
 -   📚 Documentation updated.

@@ -1,4 +1,6 @@
 import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table } from "typeorm";
+import { stripPublic } from "../src/util/strip-public";
+import { cryptSha1 } from "../src/util/crypt-sha1";
 
 /**
  * Column types used for @PrimaryGeneratedColumn() decorator.
@@ -189,6 +191,22 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
   public relationConstraintName(
     tableOrName: Table | string,
     columnNames: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
+  ): string;
+
+  /**
+   * @param {Table|string} tableOrName
+   * @param {Array.<String>} columnNames
+   * @param {String=} where
+   * @param {String=} [nameStartsWith="IDX__"]
+   * @param {Boolean=} [stripPublicSchemaName=true]
+   * @returns {String}
+   */
+  public indexName(
+    tableOrName: Table | string,
+    columnNames: string[],
+    where?: string,
     nameStartsWith?: string,
     stripPublicSchemaName?: boolean,
   ): string;
