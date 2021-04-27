@@ -1,11 +1,9 @@
 import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table } from "typeorm";
-import { stripPublic } from "../src/util/strip-public";
-import { cryptSha1 } from "../src/util/crypt-sha1";
 
 /**
  * Column types used for @PrimaryGeneratedColumn() decorator.
  */
-export enum ColumnPrimaryType {
+export declare enum ColumnPrimaryType {
   BigInteger = "bigint",
   Decimal = "decimal",
   Integer = "integer",
@@ -17,7 +15,7 @@ export enum ColumnPrimaryType {
  * @link https://typeorm.io/#/entities/column-types-for-postgres
  * @link https://github.com/typeorm/typeorm/blob/master/test/functional/database-schema/column-types/postgres/column-types-postgres.ts
  */
-export enum ColumnType {
+export declare enum ColumnType {
   BigInteger = "bigint",
   Bit = "bit",
   BitVarying = "bit varying",
@@ -137,20 +135,20 @@ export enum ColumnType {
   VariableChar = "varchar",
   XML = "xml",
 }
-export const ColumnOptionsExtra: {
+export declare const ColumnOptionsExtra: {
   readonly comment: "Extra data in JSON format";
   readonly default: {};
   readonly name: "extra";
   readonly nullable: false;
   readonly type: "json";
 };
-export const EMAIL_LENGTH_MAX: 254;
-export const EMAIL_LENGTH_MIN: 6;
-export const NAME_LENGTH_MAX: 99;
-export const NAME_LENGTH_MIN: 1;
-export const PASSWORD_LENGTH_MAX: 128;
-export const PASSWORD_LENGTH_MIN: 5;
-export enum ConstLength {
+export declare const EMAIL_LENGTH_MAX: 254;
+export declare const EMAIL_LENGTH_MIN: 6;
+export declare const NAME_LENGTH_MAX: 99;
+export declare const NAME_LENGTH_MIN: 1;
+export declare const PASSWORD_LENGTH_MAX: 128;
+export declare const PASSWORD_LENGTH_MIN: 5;
+export declare enum ConstLength {
   EmailMax = 254,
   EmailMin = 6,
   NameMax = 99,
@@ -158,11 +156,11 @@ export enum ConstLength {
   PassMax = 128,
   PassMin = 5,
 }
-export const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
-export const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
-export const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
+export declare const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
+export declare const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
+export declare const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
 
-export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
+export declare class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   /**
    * @param {Table|string} tableOrName
    * @param {Array.<String>} columnNames
