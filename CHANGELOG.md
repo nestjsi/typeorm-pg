@@ -2,6 +2,10 @@
 
 ---
 
+## 0.0.8
+
+-   ⬆️ Dependencies updated.
+
 ## 0.0.7
 
 -   ♻️ `SafeNamingStrategy` - custom name for index key.
