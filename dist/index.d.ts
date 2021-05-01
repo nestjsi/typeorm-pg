@@ -162,11 +162,12 @@ export declare const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
 
 export declare class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   /**
-   * @param {Table|string} tableOrName
-   * @param {Array.<String>} columnNames
-   * @param {String=} referencedTablePath
-   * @param {Array.<String>=} referencedColumnNames
-   * @param {String=} [nameStartsWith="FK__"]
+   * @foreignKeyName
+   * @param {Table|String} [tableOrName]
+   * @param {Array.<String>} [columnNames]
+   * @param {String=} [referencedTablePath]
+   * @param {Array.<String>=} [referencedColumnNames]
+   * @param {String=} [nameStartsWith="FK"]
    * @param {Boolean=} [stripPublicSchemaName=true]
    * @returns {String}
    */
@@ -180,9 +181,10 @@ export declare class SafeNamingStrategy extends DefaultNamingStrategy implements
   ): string;
 
   /**
-   * @param {Table|string} tableOrName
-   * @param {Array.<String>} columnNames
-   * @param {String=} [nameStartsWith="REL__"]
+   * @name relationConstraintName
+   * @param {Table|String} [tableOrName]
+   * @param {Array.<String>} [columnNames]
+   * @param {String=} [nameStartsWith="REL"]
    * @param {Boolean=} [stripPublicSchemaName=true]
    * @returns {String}
    */
@@ -194,12 +196,13 @@ export declare class SafeNamingStrategy extends DefaultNamingStrategy implements
   ): string;
 
   /**
-   * @param {Table|string} tableOrName
-   * @param {Array.<String>} columnNames
-   * @param {String=} where
-   * @param {String=} [nameStartsWith="IDX__"]
-   * @param {Boolean=} [stripPublicSchemaName=true]
-   * @returns {String}
+   * @name indexName
+   * @param {Table|string} [tableOrName]
+   * @param {Array.<string>} [columnNames]
+   * @param {string=} [where]
+   * @param {string=} [nameStartsWith="IDX"]
+   * @param {boolean} [stripPublicSchemaName=true]
+   * @returns {string}
    */
   public indexName(
     tableOrName: Table | string,

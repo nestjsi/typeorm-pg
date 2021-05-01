@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.0
+
+-   ♻️ `SafeNamingStrategy` - change names started with defaults. Breaking change.
+
 ## 0.0.8
 
 -   ⬆️ Dependencies updated.

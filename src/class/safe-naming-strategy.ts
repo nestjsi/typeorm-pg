@@ -14,12 +14,22 @@ class SafeNamingStrategy
   //
   public name: string = "SafeNamingStrategy";
 
+  /**
+   * @foreignKeyName
+   * @param {Table|String} [tableOrName]
+   * @param {Array.<String>} [columnNames]
+   * @param {String=} [referencedTablePath]
+   * @param {Array.<String>=} [referencedColumnNames]
+   * @param {String=} [nameStartsWith="FK"]
+   * @param {Boolean=} [stripPublicSchemaName=true]
+   * @returns {String}
+   */
   public foreignKeyName(
     tableOrName: Table | string,
     columnNames: string[],
     referencedTablePath?: string,
     referencedColumnNames?: string[],
-    nameStartsWith: string = "FK__",
+    nameStartsWith: string = "FK",
     stripPublicSchemaName = true,
   ): string {
     const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
@@ -37,10 +47,18 @@ class SafeNamingStrategy
     }
   }
 
+  /**
+   * @name relationConstraintName
+   * @param {Table|String} [tableOrName]
+   * @param {Array.<String>} [columnNames]
+   * @param {String=} [nameStartsWith="REL"]
+   * @param {Boolean=} [stripPublicSchemaName=true]
+   * @returns {String}
+   */
   public relationConstraintName(
     tableOrName: Table | string,
     columnNames: string[],
-    nameStartsWith: string = "REL__",
+    nameStartsWith: string = "REL",
     stripPublicSchemaName = true,
   ): string {
     const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
@@ -54,11 +72,20 @@ class SafeNamingStrategy
     }
   }
 
+  /**
+   * @name indexName
+   * @param {Table|string} [tableOrName]
+   * @param {Array.<string>} [columnNames]
+   * @param {string=} [where]
+   * @param {string=} [nameStartsWith="IDX"]
+   * @param {boolean} [stripPublicSchemaName=true]
+   * @returns {string}
+   */
   public indexName(
     tableOrName: Table | string,
     columnNames: string[],
     where?: string,
-    nameStartsWith: string = "IDX__",
+    nameStartsWith: string = "IDX",
     stripPublicSchemaName = true,
   ): string {
     let tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
