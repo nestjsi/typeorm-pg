@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.1
+
+-   ♻️ `SafeNamingStrategy` - foreign keys now have double underscores from start. Breaking change.
+
 ## 0.1.0
 
 -   ♻️ `SafeNamingStrategy` - change names started with defaults. Breaking change.

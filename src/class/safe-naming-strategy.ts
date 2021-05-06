@@ -39,11 +39,11 @@ class SafeNamingStrategy
         `${stripPublic(name, stripPublicSchemaName)}__${stripPublic(column, stripPublicSchemaName)}`,
       `${tableName}__${tablePath}`,
     );
-    const maxLength = MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
+    const maxLength = MAX_IDENTIFIER_LENGTH - nameStartsWith.length + 2;
     if (foreignKeyName.length > maxLength) {
-      return `${nameStartsWith}${cryptSha1(foreignKeyName)}`;
+      return `${nameStartsWith}__${cryptSha1(foreignKeyName)}`;
     } else {
-      return `${nameStartsWith}${foreignKeyName}`;
+      return `${nameStartsWith}__${foreignKeyName}`;
     }
   }
 
@@ -66,7 +66,7 @@ class SafeNamingStrategy
     const columns = columnNames.map(name => stripPublic(name, stripPublicSchemaName)).join('_');
     const relationConstraintName = `${nameStartsWith}__${tableName}__${columns}`;
     if (relationConstraintName.length > maxLength) {
-      return `${nameStartsWith}${cryptSha1(relationConstraintName)}`;
+      return `${nameStartsWith}__${cryptSha1(relationConstraintName)}`;
     } else {
       return relationConstraintName;
     }
@@ -93,7 +93,7 @@ class SafeNamingStrategy
     const columns = columnNames.map(name => stripPublic(name, stripPublicSchemaName)).join('_');
     const indexName = `${nameStartsWith}__${tableName}__${columns}`;
     if (indexName.length > maxLength) {
-      return `${nameStartsWith}${cryptSha1(indexName)}`;
+      return `${nameStartsWith}__${cryptSha1(indexName)}`;
     } else {
       return indexName;
     }

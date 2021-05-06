@@ -23,13 +23,17 @@
   },
   "exports": {
     ".": {
-      "default": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
+      "browser": {
+        "import": "./dist/index.mjs",
+        "require": "./dist/index.cjs"
+      },
       "node": {
         "import": "./dist/index.mjs",
         "require": "./dist/index.cjs"
       },
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
     }
   },
   "files": [
@@ -62,5 +66,5 @@
   },
   "type": "module",
   "types": "./dist/index.d.ts",
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
