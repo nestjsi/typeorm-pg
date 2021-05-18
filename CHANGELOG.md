@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.2
+
+-   ➕ New constants: **PGSQL_INTEGER_MAX**, **PGSQL_INTEGER_MIN**, **PGSQL_SMALL_INTEGER_MAX**, **PGSQL_SMALL_INTEGER_MIN**, **PGSQL_BIG_INTEGER_MAX**, **PGSQL_BIG_INTEGER_MIN**, **PGSQL_NUMERIC_MAX**, **PGSQL_NUMERIC_MIN**.
+
 ## 0.1.1
 
 -   ♻️ `SafeNamingStrategy` - foreign keys now have double underscores from start. Breaking change.
