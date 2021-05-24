@@ -260,3 +260,29 @@ export declare class SafeNamingStrategy extends DefaultNamingStrategy implements
     stripPublicSchemaName?: boolean,
   ): string;
 }
+
+/**
+ * @name Checks
+ * @description
+ * Creates a database check.
+ * Can be used on entity property or on entity.
+ * Can create checks with composite columns when used on entity.
+ * @param {string|Array.<string>|{expressions:string|Array.<string>}|{expressions:string|Array.<string>,name:string}} [nameOrExpressions]
+ * @param {string|Array.<string>=} [maybeExpressions=undefined]
+ * @returns {ClassDecorator & PropertyDecorator}
+ * @since 0.1.3
+ */
+export function Checks(
+  nameOrExpressions:
+    | string
+    | [string, ...string[]]
+    | { expressions: string | [string, ...string[]] }
+    | { expressions: string | [string, ...string[]]; name: string },
+  maybeExpressions?: string | [string, ...string[]],
+): ClassDecorator & PropertyDecorator;
+
+export function cryptSha1(text: string): string;
+
+export function stripPublic(text: string, strip: boolean): string;
+
+export function stripSchema(text: string, strip: boolean): string;

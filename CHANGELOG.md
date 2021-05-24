@@ -2,6 +2,10 @@
 
 ---
 
+## 0.1.4
+
+-   ➕ New exported utility function `stripSchema`.
+
 ## 0.1.3
 
 -   ➕ New decorator `Checks`.
