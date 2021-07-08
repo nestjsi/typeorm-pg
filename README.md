@@ -65,12 +65,22 @@ enum ColumnType {
 }
 ```
 
+### Decorators
+
+```typescript
+import {
+  Checks,
+  IndexColumns,
+  UniqueColumns,
+} from '@nestjsi/typeorm-pg';
+```
+
 ### Useful constants
 
 ```typescript
 import {
   EMAIL_LENGTH_MAX,
-  EMAIL_LENGTH_MIN
+  EMAIL_LENGTH_MIN,
   // and more…
 } from '@nestjsi/typeorm-pg';
 ```

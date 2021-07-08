@@ -1,4 +1,4 @@
-import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table, Unique } from "typeorm";
+import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table } from "typeorm";
 
 /**
  * Column types used for @PrimaryGeneratedColumn() decorator.
@@ -298,6 +298,22 @@ export function stripSchema(text: string, strip: boolean): string;
 export function safeConstraint(name: string, separatorMinor?: string, separatorMajor?: string): string;
 
 /**
+ * @name safeIndex
+ * @description Return safe, uncut name for index key.
+ * @param {string[]} [columnNames]
+ * @param {string} [prefix='IDX']
+ * @param {string} [separatorMinor='_']
+ * @param {string} [separatorMajor='__']
+ * @returns {string}
+ */
+export function safeIndex(
+  columnNames: string[],
+  prefix?: string,
+  separatorMinor?: string,
+  separatorMajor?: string,
+): string;
+
+/**
  * @name safeUnique
  * @description Return safe, uncut name for unique key.
  * @param {string[]} [columnNames]
@@ -320,3 +336,11 @@ export function safeUnique(
  * @since 0.1.5
  */
 export function UniqueColumns(fields: string[]): ClassDecorator & PropertyDecorator;
+
+/**
+ * @name IndexColumns
+ * @param {string[]} [fields]
+ * @returns {ClassDecorator & PropertyDecorator}
+ * @since 0.1.6
+ */
+export function IndexColumns(fields: string[]): ClassDecorator & PropertyDecorator;

@@ -47,18 +47,14 @@ class SafeNamingStrategy
     if (foreignKeyName.length > maxLength) {
       if (stripPathAndTableAttempt) {
         const foreignKeyNameAttempt = columnNames
-          //
           .reduce((name: string, column: string) => `_${stripPublic(column, stripPublicSchemaName)}`, "");
         if (foreignKeyNameAttempt.length <= maxLength) {
           return safeConstraint(`${nameStartsWith}_${foreignKeyNameAttempt}`);
-          // return `${nameStartsWith}_${foreignKeyNameAttempt}`;
         }
       }
       return safeConstraint(`${nameStartsWith}__${cryptSha1(foreignKeyName)}`);
-      // return `${nameStartsWith}__${cryptSha1(foreignKeyName)}`;
     } else {
       return safeConstraint(`${nameStartsWith}__${foreignKeyName}`);
-      // return `${nameStartsWith}__${foreignKeyName}`;
     }
   }
 
@@ -90,10 +86,8 @@ class SafeNamingStrategy
         }
       }
       return safeConstraint(`${nameStartsWith}__${cryptSha1(relationConstraintName)}`);
-      // return `${nameStartsWith}__${cryptSha1(relationConstraintName)}`;
     } else {
       return safeConstraint(relationConstraintName);
-      // return relationConstraintName;
     }
   }
 
@@ -124,14 +118,11 @@ class SafeNamingStrategy
         const indexNameAttempt = `${nameStartsWith}__${columns}`;
         if (indexNameAttempt.length <= maxLength) {
           return safeConstraint(indexNameAttempt);
-          // return `${nameStartsWith}_${indexKeyNameAttempt}`;
         }
       }
       return safeConstraint(`${nameStartsWith}__${cryptSha1(indexName)}`);
-      // return `${nameStartsWith}__${cryptSha1(indexName)}`;
     } else {
       return safeConstraint(indexName);
-      // return indexName;
     }
   }
 }

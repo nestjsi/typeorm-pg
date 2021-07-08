@@ -2,6 +2,18 @@
 
 ---
 
+## 0.1.6
+
+-   ➕ New decorator `IndexColumns`.
+
+-   ➕ New exported utility function `safeIndex`.
+
+## 0.1.5
+
+-   ➕ New decorator `UniqueColumns.
+
+-   ➕ New exported utility function `safeUnique`.
+
 ## 0.1.4
 
 -   ➕ New exported utility function `stripSchema`.
