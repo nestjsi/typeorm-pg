@@ -2,6 +2,7 @@ import { DefaultNamingStrategy, NamingStrategyInterface, Table } from "typeorm";
 
 import { cryptSha1 } from "../util/crypt-sha1";
 import { stripPublic } from "../util/strip-public";
+import { safeConstraint } from "../util/safe-constraint";
 
 const MAX_IDENTIFIER_LENGTH = 63 as const;
 
@@ -10,19 +11,21 @@ class SafeNamingStrategy
   //
   extends DefaultNamingStrategy
   //
-  implements NamingStrategyInterface {
+  implements NamingStrategyInterface
+{
   //
   public name: string = "SafeNamingStrategy";
 
   /**
    * @foreignKeyName
-   * @param {Table|String} [tableOrName]
-   * @param {Array.<String>} [columnNames]
-   * @param {String=} [referencedTablePath]
-   * @param {Array.<String>=} [referencedColumnNames]
-   * @param {String=} [nameStartsWith="FK"]
-   * @param {Boolean=} [stripPublicSchemaName=true]
-   * @returns {String}
+   * @param {Table|string} [tableOrName]
+   * @param {string[]} [columnNames]
+   * @param {string=} [referencedTablePath]
+   * @param {string[]=} [referencedColumnNames]
+   * @param {string=} [nameStartsWith="FK"]
+   * @param {boolean=} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @returns {string}
    */
   public foreignKeyName(
     tableOrName: Table | string,
@@ -31,6 +34,7 @@ class SafeNamingStrategy
     referencedColumnNames?: string[],
     nameStartsWith: string = "FK",
     stripPublicSchemaName = true,
+    stripPathAndTableAttempt = true,
   ): string {
     const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
     const tablePath = stripPublic(referencedTablePath || "", stripPublicSchemaName);
@@ -41,44 +45,66 @@ class SafeNamingStrategy
     );
     const maxLength = MAX_IDENTIFIER_LENGTH - nameStartsWith.length + 2;
     if (foreignKeyName.length > maxLength) {
-      return `${nameStartsWith}__${cryptSha1(foreignKeyName)}`;
+      if (stripPathAndTableAttempt) {
+        const foreignKeyNameAttempt = columnNames
+          //
+          .reduce((name: string, column: string) => `_${stripPublic(column, stripPublicSchemaName)}`, "");
+        if (foreignKeyNameAttempt.length <= maxLength) {
+          return safeConstraint(`${nameStartsWith}_${foreignKeyNameAttempt}`);
+          // return `${nameStartsWith}_${foreignKeyNameAttempt}`;
+        }
+      }
+      return safeConstraint(`${nameStartsWith}__${cryptSha1(foreignKeyName)}`);
+      // return `${nameStartsWith}__${cryptSha1(foreignKeyName)}`;
     } else {
-      return `${nameStartsWith}__${foreignKeyName}`;
+      return safeConstraint(`${nameStartsWith}__${foreignKeyName}`);
+      // return `${nameStartsWith}__${foreignKeyName}`;
     }
   }
 
   /**
    * @name relationConstraintName
-   * @param {Table|String} [tableOrName]
-   * @param {Array.<String>} [columnNames]
-   * @param {String=} [nameStartsWith="REL"]
-   * @param {Boolean=} [stripPublicSchemaName=true]
-   * @returns {String}
+   * @param {Table|string} [tableOrName]
+   * @param {string[]} [columnNames]
+   * @param {string=} [nameStartsWith="REL"]
+   * @param {boolean=} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @returns {string}
    */
   public relationConstraintName(
     tableOrName: Table | string,
     columnNames: string[],
     nameStartsWith: string = "REL",
     stripPublicSchemaName = true,
+    stripPathAndTableAttempt = true,
   ): string {
     const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
     const maxLength = MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
-    const columns = columnNames.map(name => stripPublic(name, stripPublicSchemaName)).join('_');
+    const columns = columnNames.map((name) => stripPublic(name, stripPublicSchemaName)).join("_");
     const relationConstraintName = `${nameStartsWith}__${tableName}__${columns}`;
     if (relationConstraintName.length > maxLength) {
-      return `${nameStartsWith}__${cryptSha1(relationConstraintName)}`;
+      if (stripPathAndTableAttempt) {
+        const relationConstraintNameAttempt = `${nameStartsWith}__${columns}`;
+        if (relationConstraintNameAttempt.length <= maxLength) {
+          return safeConstraint(relationConstraintNameAttempt);
+        }
+      }
+      return safeConstraint(`${nameStartsWith}__${cryptSha1(relationConstraintName)}`);
+      // return `${nameStartsWith}__${cryptSha1(relationConstraintName)}`;
     } else {
-      return relationConstraintName;
+      return safeConstraint(relationConstraintName);
+      // return relationConstraintName;
     }
   }
 
   /**
    * @name indexName
    * @param {Table|string} [tableOrName]
-   * @param {Array.<string>} [columnNames]
+   * @param {string[]} [columnNames]
    * @param {string=} [where]
    * @param {string=} [nameStartsWith="IDX"]
    * @param {boolean} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
    * @returns {string}
    */
   public indexName(
@@ -87,15 +113,25 @@ class SafeNamingStrategy
     where?: string,
     nameStartsWith: string = "IDX",
     stripPublicSchemaName = true,
+    stripPathAndTableAttempt = true,
   ): string {
     let tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
     const maxLength = MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
-    const columns = columnNames.map(name => stripPublic(name, stripPublicSchemaName)).join('_');
+    const columns = columnNames.map((name) => stripPublic(name, stripPublicSchemaName)).join("_");
     const indexName = `${nameStartsWith}__${tableName}__${columns}`;
     if (indexName.length > maxLength) {
-      return `${nameStartsWith}__${cryptSha1(indexName)}`;
+      if (stripPathAndTableAttempt) {
+        const indexNameAttempt = `${nameStartsWith}__${columns}`;
+        if (indexNameAttempt.length <= maxLength) {
+          return safeConstraint(indexNameAttempt);
+          // return `${nameStartsWith}_${indexKeyNameAttempt}`;
+        }
+      }
+      return safeConstraint(`${nameStartsWith}__${cryptSha1(indexName)}`);
+      // return `${nameStartsWith}__${cryptSha1(indexName)}`;
     } else {
-      return indexName;
+      return safeConstraint(indexName);
+      // return indexName;
     }
   }
 }
