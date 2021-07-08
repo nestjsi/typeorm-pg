@@ -90,7 +90,6 @@ import {
 <!-- Badges -->
 
 [npm-version-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
-[npm-version-img]: https://npmjs.com/package/@nestjsi/typeorm-pg?&icon=npm&label=npm&color=DD3636
+[npm-version-img]: https://badgen.net/npm/v/@nestjsi/typeorm-pg?&icon=npm&label=npm&color=DD3636
 [npm-downloads-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
 [npm-downloads-img]: https://badgen.net/npm/dt/@nestjsi/typeorm-pg?&icon=terminal&label=downloads&color=009688
-
