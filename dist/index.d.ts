@@ -210,46 +210,13 @@ export declare const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
 
 export declare class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   /**
-   * @foreignKeyName
-   * @param {Table|String} [tableOrName]
-   * @param {Array.<String>} [columnNames]
-   * @param {String=} [referencedTablePath]
-   * @param {Array.<String>=} [referencedColumnNames]
-   * @param {String=} [nameStartsWith="FK"]
-   * @param {Boolean=} [stripPublicSchemaName=true]
-   * @returns {String}
-   */
-  public foreignKeyName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    referencedTablePath?: string,
-    referencedColumnNames?: string[],
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-  ): string;
-
-  /**
-   * @name relationConstraintName
-   * @param {Table|String} [tableOrName]
-   * @param {Array.<String>} [columnNames]
-   * @param {String=} [nameStartsWith="REL"]
-   * @param {Boolean=} [stripPublicSchemaName=true]
-   * @returns {String}
-   */
-  public relationConstraintName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-  ): string;
-
-  /**
    * @name indexName
    * @param {Table|string} [tableOrName]
-   * @param {Array.<string>} [columnNames]
+   * @param {string[]} [columnNames]
    * @param {string=} [where]
    * @param {string=} [nameStartsWith="IDX"]
    * @param {boolean} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
    * @returns {string}
    */
   public indexName(
@@ -258,6 +225,62 @@ export declare class SafeNamingStrategy extends DefaultNamingStrategy implements
     where?: string,
     nameStartsWith?: string,
     stripPublicSchemaName?: boolean,
+    stripPathAndTableAttempt?: boolean,
+  ): string;
+
+  /**
+   * @foreignKeyName
+   * @param {Table|string} [tableOrName]
+   * @param {string[]} [columnNames]
+   * @param {string=} [referencedTablePath]
+   * @param {string[]=} [referencedColumnNames]
+   * @param {string=} [nameStartsWith="FK"]
+   * @param {boolean=} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @returns {string}
+   */
+  public foreignKeyName(
+    tableOrName: Table | string,
+    columnNames: string[],
+    referencedTablePath?: string,
+    referencedColumnNames?: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
+    stripPathAndTableAttempt?: boolean,
+  ): string;
+
+  /**
+   * @name primaryKeyName
+   * @param {Table|string} [tableOrName]
+   * @param {string[]} [columnNames]
+   * @param {string=} [nameStartsWith="PK"]
+   * @param {boolean=} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @returns {string}
+   */
+  public override primaryKeyName(
+    tableOrName: Table | string,
+    columnNames: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
+    stripPathAndTableAttempt?: boolean,
+  ): string;
+
+  /**
+   * @name relationConstraintName
+   * @param {Table|string} [tableOrName]
+   * @param {string[]} [columnNames]
+   * @param {string=} [nameStartsWith="REL"]
+   * @param {boolean=} [stripPublicSchemaName=true]
+   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @returns {string}
+   */
+  public relationConstraintName(
+    tableOrName: Table | string,
+    columnNames: string[],
+    nameStartsWith?: string,
+    stripPublicSchemaName?: boolean,
+    stripPathAndTableAttempt?: boolean,
   ): string;
 }
 
