@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.0
+
+-   ➕ New constants: **PGSQL_MAX_IDENTIFIER_LENGTH**.
+
 ## 0.1.6
 
 -   ➕ New decorator `IndexColumns`.

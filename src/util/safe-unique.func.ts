@@ -1,4 +1,4 @@
-import { safeConstraint } from "./safe-constraint";
+import { safeConstraint } from "./safe-constraint.func";
 
 /**
  * @name safeUnique

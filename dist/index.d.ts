@@ -1,369 +1,485 @@
-import { DefaultNamingStrategy, NamingStrategyInterface, RelationOptions, Table } from "typeorm";
+declare module '@nestjsi/typeorm-pg/class/safe-naming-strategy.class' {
+  import { DefaultNamingStrategy, NamingStrategyInterface, Table } from "typeorm";
+  export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
+      name: string;
+      /**
+       * @name indexName
+       * @param {Table|string} [tableOrName]
+       * @param {string[]} [columnNames]
+       * @param {string=} [where]
+       * @param {string=} [nameStartsWith="IDX"]
+       * @param {boolean} [stripPublicSchemaName=true]
+       * @param {boolean=} [stripPathAndTableAttempt=true]
+       * @returns {string}
+       */
+      indexName(tableOrName: Table | string, columnNames: string[], where?: string, nameStartsWith?: string, stripPublicSchemaName?: boolean, stripPathAndTableAttempt?: boolean): string;
+      /**
+       * @foreignKeyName
+       * @param {Table|string} [tableOrName]
+       * @param {string[]} [columnNames]
+       * @param {string=} [referencedTablePath]
+       * @param {string[]=} [referencedColumnNames]
+       * @param {string=} [nameStartsWith="FK"]
+       * @param {boolean=} [stripPublicSchemaName=true]
+       * @param {boolean=} [stripPathAndTableAttempt=true]
+       * @returns {string}
+       */
+      foreignKeyName(tableOrName: Table | string, columnNames: string[], referencedTablePath?: string, referencedColumnNames?: string[], nameStartsWith?: string, stripPublicSchemaName?: boolean, stripPathAndTableAttempt?: boolean): string;
+      /**
+       * @name primaryKeyName
+       * @param {Table|string} [tableOrName]
+       * @param {string[]} [columnNames]
+       * @param {string=} [nameStartsWith="PK"]
+       * @param {boolean=} [stripPublicSchemaName=true]
+       * @param {boolean=} [stripPathAndTableAttempt=true]
+       * @returns {string}
+       */
+      primaryKeyName(tableOrName: Table | string, columnNames: string[], nameStartsWith?: string, stripPublicSchemaName?: boolean, stripPathAndTableAttempt?: boolean): string;
+      /**
+       * @name relationConstraintName
+       * @param {Table|string} [tableOrName]
+       * @param {string[]} [columnNames]
+       * @param {string=} [nameStartsWith="REL"]
+       * @param {boolean=} [stripPublicSchemaName=true]
+       * @param {boolean=} [stripPathAndTableAttempt=true]
+       * @returns {string}
+       */
+      relationConstraintName(tableOrName: Table | string, columnNames: string[], nameStartsWith?: string, stripPublicSchemaName?: boolean, stripPathAndTableAttempt?: boolean): string;
+  }
 
-/**
- * Column types used for @PrimaryGeneratedColumn() decorator.
- */
-export declare enum ColumnPrimaryType {
-  BigInteger = "bigint",
-  Decimal = "decimal",
-  Integer = "integer",
-  SmallInteger = "smallint",
-  UUID = "uuid",
 }
-/**
- * @description Column types for PostgreSQL
- * @link https://typeorm.io/#/entities/column-types-for-postgres
- * @link https://github.com/typeorm/typeorm/blob/master/test/functional/database-schema/column-types/postgres/column-types-postgres.ts
- */
-export declare enum ColumnType {
-  BigInteger = "bigint",
-  Bit = "bit",
-  BitVarying = "bit varying",
+declare module '@nestjsi/typeorm-pg/constant/column.const' {
   /**
-   * @deprecated use Boolean instead
-   * @alias Boolean
+   * @description PostgreSQL's Max Identifier Length
+   * @type {number}
    */
-  Bool = "bool",
-  Boolean = "boolean",
-  Box = "box",
-  ByteHexadecimal = "bytea",
-  CIText = "citext",
+  export const PGSQL_MAX_IDENTIFIER_LENGTH: 63;
   /**
-   * @deprecated use Character instead
-   * @alias Character
+   * @description integer
+   * @type {number}
    */
-  Char = "char",
-  Character = "character",
-  CharacterVarying = "character varying",
-  Circle = "circle",
-  Cube = "cube",
-  Date = "date",
-  DateRange = "daterange",
-  Decimal = "decimal",
-  DoublePrecision = "double precision",
-  Enum = "enum",
-  Float = "float",
+  export const PGSQL_INTEGER_MAX: number;
   /**
-   * @deprecated use Real instead
-   * @alias Real
+   * @description integer
+   * @type {number}
    */
-  Float4 = "float4",
+  export const PGSQL_INTEGER_MIN: number;
   /**
-   * @deprecated use DoublePrecision instead
-   * @alias DoublePrecision
+   * @description smallint
+   * @type {number}
    */
-  Float8 = "float8",
-  Geography = "geography",
-  Geometry = "geometry",
-  HStore = "hstore",
-  IPAddress = "inet",
-  IPCIDR = "cidr",
+  export const PGSQL_SMALL_INTEGER_MAX: number;
   /**
-   * @deprecated use Integer instead
-   * @alias Integer
+   * @description smallint
+   * @type {number}
    */
-  Int = "int",
+  export const PGSQL_SMALL_INTEGER_MIN: number;
   /**
-   * @deprecated use SmallInt instead
-   * @alias SmallInt
+   * @description bigint
+   * @type {string}
    */
-  Int2 = "int2",
+  export const PGSQL_BIG_INTEGER_MAX: string;
   /**
-   * @deprecated use Integer instead
-   * @alias Integer
+   * @description bigint
+   * @type {string}
    */
-  Int4 = "int4",
-  Int4Range = "int4range",
+  export const PGSQL_BIG_INTEGER_MIN: string;
   /**
-   * @deprecated use BigInt instead
-   * @alias BigInt
+   * @description numeric
+   * @type {string}
    */
-  Int8 = "int8",
-  Int8Range = "int8range",
-  Integer = "integer",
-  Interval = "interval",
-  JSON = "json",
-  JSONB = "jsonb",
-  LabelTrees = "ltree",
-  Line = "line",
-  LineSegment = "lseg",
-  MACAddress = "macaddr",
-  Money = "money",
-  NumberRange = "numrange",
+  export const PGSQL_NUMERIC_MAX: string;
   /**
-   * @deprecated use Decimal instead
-   * @alias Decimal
+   * @description numeric
+   * @type {string}
    */
-  Numeric = "numeric",
-  Path = "path",
-  Point = "point",
-  Polygon = "polygon",
-  Real = "real",
-  SmallInteger = "smallint",
+  export const PGSQL_NUMERIC_MIN: string;
+  export const EMAIL_LENGTH_MAX: number;
+  export const EMAIL_LENGTH_MIN: number;
+  export const NAME_LENGTH_MAX: number;
+  export const NAME_LENGTH_MIN: number;
+  export const PASSWORD_LENGTH_MAX: number;
+  export const PASSWORD_LENGTH_MIN: number;
+  export const ColumnOptionsExtra: {
+      readonly comment: "Extra data in JSON format";
+      readonly default: {};
+      readonly name: "extra";
+      readonly nullable: false;
+      readonly type: "json";
+  };
   /**
-   * @description Text of variable-length with limit
-   * @alias CharacterVarying
+   * Column types used for @PrimaryGeneratedColumn() decorator.
    */
-  String = "character varying",
-  Text = "text",
-  TextSearchQuery = "tsquery",
-  TextSearchVector = "tsvector",
-  Time = "time",
-  TimeStamp = "timestamp",
+  export enum ColumnPrimaryType {
+      BigInteger = "bigint",
+      Decimal = "decimal",
+      Integer = "integer",
+      SmallInteger = "smallint",
+      UUID = "uuid"
+  }
   /**
-   * @deprecated use TimeStampWithTimeZone instead
-   * @alias TimeStampWithTimeZone
+   * @description Column types for PostgreSQL
+   * @link https://typeorm.io/#/entities/column-types-for-postgres
+   * @link https://github.com/typeorm/typeorm/blob/master/test/functional/database-schema/column-types/postgres/column-types-postgres.ts
    */
-  TimeStampWithTimeZoneAbbr = "timestamptz",
-  TimeStampWithTimeZoneRange = "tstzrange",
-  TimeStampWithoutTimeZone = "timestamp without time zone",
-  TimeStampWithoutTimeZoneRange = "tsrange",
-  TimeWithTimeZoneAbbr = "timetz",
-  TimeWithTimeZone = "time with time zone",
-  TimeWithoutTimeZone = "time without time zone",
-  TimeStampWithTimeZone = "timestamp with time zone",
-  UUID = "uuid",
-  /**
-   * @deprecated use BitVarying instead
-   * @alias BitVarying
-   */
-  VariableBitString = "varbit",
-  /**
-   * @deprecated use CharacterVarying instead
-   * @alias CharacterVarying
-   */
-  VariableChar = "varchar",
-  XML = "xml",
+  export enum ColumnType {
+      BigInteger = "bigint",
+      Bit = "bit",
+      BitVarying = "bit varying",
+      /**
+       * @deprecated use Boolean instead
+       * @alias Boolean
+       */
+      Bool = "bool",
+      Boolean = "boolean",
+      Box = "box",
+      ByteHexadecimal = "bytea",
+      CIText = "citext",
+      /**
+       * @deprecated use Character instead
+       * @alias Character
+       */
+      Char = "char",
+      Character = "character",
+      CharacterVarying = "character varying",
+      Circle = "circle",
+      Cube = "cube",
+      Date = "date",
+      DateRange = "daterange",
+      Decimal = "decimal",
+      DoublePrecision = "double precision",
+      Enum = "enum",
+      Float = "float",
+      /**
+       * @deprecated use Real instead
+       * @alias Real
+       */
+      Float4 = "float4",
+      /**
+       * @deprecated use DoublePrecision instead
+       * @alias DoublePrecision
+       */
+      Float8 = "float8",
+      Geography = "geography",
+      Geometry = "geometry",
+      HStore = "hstore",
+      IPAddress = "inet",
+      IPCIDR = "cidr",
+      /**
+       * @deprecated use Integer instead
+       * @alias Integer
+       */
+      Int = "int",
+      /**
+       * @deprecated use SmallInt instead
+       * @alias SmallInt
+       */
+      Int2 = "int2",
+      /**
+       * @deprecated use Integer instead
+       * @alias Integer
+       */
+      Int4 = "int4",
+      Int4Range = "int4range",
+      /**
+       * @deprecated use BigInt instead
+       * @alias BigInt
+       */
+      Int8 = "int8",
+      Int8Range = "int8range",
+      Integer = "integer",
+      Interval = "interval",
+      JSON = "json",
+      JSONB = "jsonb",
+      LabelTrees = "ltree",
+      Line = "line",
+      LineSegment = "lseg",
+      MACAddress = "macaddr",
+      Money = "money",
+      NumberRange = "numrange",
+      /**
+       * @deprecated use Decimal instead
+       * @alias Decimal
+       */
+      Numeric = "numeric",
+      Path = "path",
+      Point = "point",
+      Polygon = "polygon",
+      Real = "real",
+      SmallInteger = "smallint",
+      /**
+       * @description Text of variable-length with limit
+       * @alias CharacterVarying
+       */
+      String = "character varying",
+      Text = "text",
+      TextSearchQuery = "tsquery",
+      TextSearchVector = "tsvector",
+      Time = "time",
+      TimeStamp = "timestamp",
+      /**
+       * @deprecated use TimeStampWithTimeZone instead
+       * @alias TimeStampWithTimeZone
+       */
+      TimeStampWithTimeZoneAbbr = "timestamptz",
+      TimeStampWithTimeZoneRange = "tstzrange",
+      TimeStampWithoutTimeZone = "timestamp without time zone",
+      TimeStampWithoutTimeZoneRange = "tsrange",
+      TimeWithTimeZoneAbbr = "timetz",
+      TimeWithTimeZone = "time with time zone",
+      TimeWithoutTimeZone = "time without time zone",
+      TimeStampWithTimeZone = "timestamp with time zone",
+      UUID = "uuid",
+      /**
+       * @deprecated use BitVarying instead
+       * @alias BitVarying
+       */
+      VariableBitString = "varbit",
+      /**
+       * @deprecated use CharacterVarying instead
+       * @alias CharacterVarying
+       */
+      VariableChar = "varchar",
+      XML = "xml"
+  }
+  export enum ConstLength {
+      EmailMax = 254,
+      EmailMin = 6,
+      NameMax = 99,
+      NameMin = 1,
+      PassMax = 128,
+      PassMin = 5
+  }
+  export enum ColumnPrefix {
+      /** Unique index / constraint */
+      AltKey = "ak",
+      /** Check constraint */
+      Check = "ck",
+      /** Default constraint */
+      Default = "df",
+      /** Exclusion constraint */
+      Exclusion = "ex",
+      /** Foreign key */
+      ForeignKey = "fk",
+      /** Non-unique index */
+      Index = "idx",
+      /** Primary Key constraint */
+      PrimaryKey = "pk",
+      /** Relation constraint */
+      Relation = "rel",
+      /** Sequences */
+      Sequences = "seq",
+      /** Unique constraint */
+      Unique = "uq"
+  }
+  export enum ColumnSuffix {
+      /** Unique index / constraint */
+      AltKey = "AK",
+      /** Check constraint */
+      Check = "CK",
+      /** Default constraint */
+      Default = "DF",
+      /** Exclusion constraint */
+      Exclusion = "EX",
+      /** Foreign key */
+      ForeignKey = "FK",
+      /** Non-unique index */
+      Index = "IDX",
+      /** Primary Key constraint */
+      PrimaryKey = "PK",
+      /** Relation constraint */
+      Relation = "REL",
+      /** Sequences */
+      Sequences = "SEQ",
+      /** Unique constraint */
+      Unique = "UQ"
+  }
+
 }
-export declare const ColumnOptionsExtra: {
-  readonly comment: "Extra data in JSON format";
-  readonly default: {};
-  readonly name: "extra";
-  readonly nullable: false;
-  readonly type: "json";
-};
-/**
- * @description integer
- * @type {number}
- */
-export declare const PGSQL_INTEGER_MAX: number; // 2147483647
+declare module '@nestjsi/typeorm-pg/constant/options.const' {
+  import { RelationOptions } from "typeorm";
+  export const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
+  export const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
+  export const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
 
-/**
- * @description integer
- * @type {number}
- */
-export declare const PGSQL_INTEGER_MIN: number; // -2147483648
-
-/**
- * @description smallint
- * @type {number}
- */
-export declare const PGSQL_SMALL_INTEGER_MAX: number; // 32767
-
-/**
- * @description smallint
- * @type {number}
- */
-export declare const PGSQL_SMALL_INTEGER_MIN: number; // -32768
-
-/**
- * @description bigint
- * @type {string}
- */
-export declare const PGSQL_BIG_INTEGER_MAX: string; // "9223372036854775807"
-
-/**
- * @description bigint
- * @type {string}
- */
-export declare const PGSQL_BIG_INTEGER_MIN: string; // "-9223372036854775808"
-
-/**
- * @description numeric
- * @type {string}
- */
-export declare const PGSQL_NUMERIC_MAX: string; // "3141592653589793238462643383279502.1618033988749894848204586834365638"
-
-/**
- * @description numeric
- * @type {string}
- */
-export declare const PGSQL_NUMERIC_MIN: string;
-
-export declare const EMAIL_LENGTH_MAX: 254;
-export declare const EMAIL_LENGTH_MIN: 6;
-export declare const NAME_LENGTH_MAX: 99;
-export declare const NAME_LENGTH_MIN: 1;
-export declare const PASSWORD_LENGTH_MAX: 128;
-export declare const PASSWORD_LENGTH_MIN: 5;
-export declare enum ConstLength {
-  EmailMax = 254,
-  EmailMin = 6,
-  NameMax = 99,
-  NameMin = 1,
-  PassMax = 128,
-  PassMin = 5,
 }
-export declare const MANY_TO_MANY_OPTION_DEFAULT: RelationOptions;
-export declare const MANY_TO_ONE_OPTION_DEFAULT: RelationOptions;
-export declare const ONE_TO_ONE_OPTION_DEFAULT: RelationOptions;
-
-export declare class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
+declare module '@nestjsi/typeorm-pg/decorator/checks.decorator' {
   /**
-   * @name indexName
-   * @param {Table|string} [tableOrName]
-   * @param {string[]} [columnNames]
-   * @param {string=} [where]
-   * @param {string=} [nameStartsWith="IDX"]
-   * @param {boolean} [stripPublicSchemaName=true]
-   * @param {boolean=} [stripPathAndTableAttempt=true]
+   * @name Checks
+   * @description
+   * Creates a database check.
+   * Can be used on entity property or on entity.
+   * Can create checks with composite columns when used on entity.
+   * @param {string|Array.<string>|{expressions:string|Array.<string>}|{expressions:string|Array.<string>,name:string}} [nameOrExpressions]
+   * @param {string|Array.<string>=} [maybeExpressions=undefined]
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.3
+   */
+  export function Checks(nameOrExpressions: string | [string, ...string[]] | {
+      expressions: string | [string, ...string[]];
+  } | {
+      expressions: string | [string, ...string[]];
+      name: string;
+  }, maybeExpressions?: string | [string, ...string[]]): ClassDecorator & PropertyDecorator;
+
+}
+declare module '@nestjsi/typeorm-pg/decorator/index-columns.decorator' {
+  /**
+   * @name IndexColumns
+   * @param {string[]} [fields] List of field names
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.6
+   */
+  export function IndexColumns(fields: string[]): ClassDecorator & PropertyDecorator;
+  /**
+   * @name IndexColumns
+   * @param {string[]} [fields] List of field names
+   * @param {boolean|string=} [prefix=false] Add prefix to name
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.6
+   */
+  export function IndexColumns(fields: string[], prefix?: boolean | string): ClassDecorator & PropertyDecorator;
+  /**
+   * @name IndexColumns
+   * @param {string} [name] Column name
+   * @param {string[]} [fields] List of field names
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.6
+   */
+  export function IndexColumns(name: string, fields: string[]): ClassDecorator & PropertyDecorator;
+  /**
+   * @name IndexColumns
+   * @param {string} [name] Column name
+   * @param {string[]} [fields] List of field names
+   * @param {boolean|string=} [prefix=false] Add prefix to name
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.6
+   */
+  export function IndexColumns(name: string, fields: string[], prefix?: boolean | string): ClassDecorator & PropertyDecorator;
+
+}
+declare module '@nestjsi/typeorm-pg/decorator/unique-columns.decorator' {
+  /**
+   * @name UniqueColumns
+   * @param {string[]} [fields] List of field names
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.5
+   */
+  export function UniqueColumns(fields: string[]): ClassDecorator & PropertyDecorator;
+  /**
+   * @name UniqueColumns
+   * @param {string[]} [fields] List of field names
+   * @param {boolean|string=} [prefix=false] Add prefix to name
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.5
+   */
+  export function UniqueColumns(fields: string[], prefix?: boolean | string): ClassDecorator & PropertyDecorator;
+  /**
+   * @name UniqueColumns
+   * @param {string} [name] Column name
+   * @param {string[]} [fields] List of field names
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.5
+   */
+  export function UniqueColumns(name: string, fields: string[]): ClassDecorator & PropertyDecorator;
+  /**
+   * @name UniqueColumns
+   * @param {string} [name] Column name
+   * @param {string[]} [fields] List of field names
+   * @param {boolean|string=} [prefix=false] Add prefix to name
+   * @returns {ClassDecorator & PropertyDecorator}
+   * @since 0.1.5
+   */
+  export function UniqueColumns(name: string, fields: string[], prefix?: boolean | string): ClassDecorator & PropertyDecorator;
+
+}
+declare module '@nestjsi/typeorm-pg/index' {
+  export * from "@nestjsi/typeorm-pg/class/safe-naming-strategy.class";
+  export * from "@nestjsi/typeorm-pg/constant/column.const";
+  export * from "@nestjsi/typeorm-pg/constant/options.const";
+  export * from "@nestjsi/typeorm-pg/decorator/checks.decorator";
+  export * from "@nestjsi/typeorm-pg/decorator/index-columns.decorator";
+  export * from "@nestjsi/typeorm-pg/decorator/unique-columns.decorator";
+  export * from "@nestjsi/typeorm-pg/util/crypt-sha1.func";
+  export * from "@nestjsi/typeorm-pg/util/safe-constraint.func";
+  export * from "@nestjsi/typeorm-pg/util/safe-index.func";
+  export * from "@nestjsi/typeorm-pg/util/safe-unique.func";
+  export * from "@nestjsi/typeorm-pg/util/strip-public.func";
+  export * from "@nestjsi/typeorm-pg/util/strip-schema.func";
+
+}
+declare module '@nestjsi/typeorm-pg/util/camel.func' {
+  /**
+   * @name textCaseCamel
+   * @description Converts string into camelCase.
+   * @param {string} [text]
+   * @param {boolean=} [firstCapital=false]
    * @returns {string}
    */
-  public indexName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    where?: string,
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-    stripPathAndTableAttempt?: boolean,
-  ): string;
+  export function textCaseCamel(text: string, firstCapital?: boolean): string;
 
-  /**
-   * @foreignKeyName
-   * @param {Table|string} [tableOrName]
-   * @param {string[]} [columnNames]
-   * @param {string=} [referencedTablePath]
-   * @param {string[]=} [referencedColumnNames]
-   * @param {string=} [nameStartsWith="FK"]
-   * @param {boolean=} [stripPublicSchemaName=true]
-   * @param {boolean=} [stripPathAndTableAttempt=true]
-   * @returns {string}
-   */
-  public foreignKeyName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    referencedTablePath?: string,
-    referencedColumnNames?: string[],
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-    stripPathAndTableAttempt?: boolean,
-  ): string;
-
-  /**
-   * @name primaryKeyName
-   * @param {Table|string} [tableOrName]
-   * @param {string[]} [columnNames]
-   * @param {string=} [nameStartsWith="PK"]
-   * @param {boolean=} [stripPublicSchemaName=true]
-   * @param {boolean=} [stripPathAndTableAttempt=true]
-   * @returns {string}
-   */
-  public override primaryKeyName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-    stripPathAndTableAttempt?: boolean,
-  ): string;
-
-  /**
-   * @name relationConstraintName
-   * @param {Table|string} [tableOrName]
-   * @param {string[]} [columnNames]
-   * @param {string=} [nameStartsWith="REL"]
-   * @param {boolean=} [stripPublicSchemaName=true]
-   * @param {boolean=} [stripPathAndTableAttempt=true]
-   * @returns {string}
-   */
-  public relationConstraintName(
-    tableOrName: Table | string,
-    columnNames: string[],
-    nameStartsWith?: string,
-    stripPublicSchemaName?: boolean,
-    stripPathAndTableAttempt?: boolean,
-  ): string;
 }
+declare module '@nestjsi/typeorm-pg/util/crypt-sha1.func' {
+  export function cryptSha1(text: string): string;
 
-/**
- * @name Checks
- * @description
- * Creates a database check.
- * Can be used on entity property or on entity.
- * Can create checks with composite columns when used on entity.
- * @param {string|Array.<string>|{expressions:string|Array.<string>}|{expressions:string|Array.<string>,name:string}} [nameOrExpressions]
- * @param {string|Array.<string>=} [maybeExpressions=undefined]
- * @returns {ClassDecorator & PropertyDecorator}
- * @since 0.1.3
- */
-export function Checks(
-  nameOrExpressions:
-    | string
-    | [string, ...string[]]
-    | { expressions: string | [string, ...string[]] }
-    | { expressions: string | [string, ...string[]]; name: string },
-  maybeExpressions?: string | [string, ...string[]],
-): ClassDecorator & PropertyDecorator;
+}
+declare module '@nestjsi/typeorm-pg/util/safe-constraint.func' {
+  /**
+   * @name safeConstraint
+   * @description Return safe, uncut name for foreign keys, primary keys etc.
+   * @param {string} [name]
+   * @param {string=} [separatorMinor='_']
+   * @param {string=} [separatorMajor='__']
+   * @returns {string}
+   */
+  export function safeConstraint(name: string, separatorMinor?: string, separatorMajor?: string): string;
 
-export function cryptSha1(text: string): string;
+}
+declare module '@nestjsi/typeorm-pg/util/safe-index.func' {
+  /**
+   * @name safeIndex
+   * @description Return safe, uncut name for index key.
+   * @param {string[]} [columnNames]
+   * @param {string=} [prefix='IDX']
+   * @param {string=} [separatorMinor='_']
+   * @param {string=} [separatorMajor='__']
+   * @returns {string}
+   */
+  export function safeIndex(columnNames: string[], prefix?: string, separatorMinor?: string, separatorMajor?: string): string;
 
-export function stripPublic(text: string, strip: boolean): string;
+}
+declare module '@nestjsi/typeorm-pg/util/safe-unique.func' {
+  /**
+   * @name safeUnique
+   * @description Return safe, uncut name for unique key.
+   * @param {string[]} [columnNames]
+   * @param {string} [prefix='UQ']
+   * @param {string} [separatorMinor='_']
+   * @param {string} [separatorMajor='__']
+   * @returns {string}
+   */
+  export function safeUnique(columnNames: string[], prefix?: string, separatorMinor?: string, separatorMajor?: string): string;
 
-export function stripSchema(text: string, strip: boolean): string;
+}
+declare module '@nestjsi/typeorm-pg/util/snake.func' {
+  /**
+   * @name textCaseSnake
+   * @description Converts string into snake-case.
+   * @param {string} [text]
+   * @returns {string}
+   */
+  export function textCaseSnake(text: string): string;
 
-/**
- * @name safeConstraint
- * @description Return safe, uncut name for foreign keys, primary keys etc.
- * @param {string} [name]
- * @param {string} [separatorMinor='_']
- * @param {string} [separatorMajor='__']
- * @returns {string}
- */
-export function safeConstraint(name: string, separatorMinor?: string, separatorMajor?: string): string;
+}
+declare module '@nestjsi/typeorm-pg/util/strip-public.func' {
+  export function stripPublic(text: string, strip?: boolean): string;
 
-/**
- * @name safeIndex
- * @description Return safe, uncut name for index key.
- * @param {string[]} [columnNames]
- * @param {string} [prefix='IDX']
- * @param {string} [separatorMinor='_']
- * @param {string} [separatorMajor='__']
- * @returns {string}
- */
-export function safeIndex(
-  columnNames: string[],
-  prefix?: string,
-  separatorMinor?: string,
-  separatorMajor?: string,
-): string;
+}
+declare module '@nestjsi/typeorm-pg/util/strip-schema.func' {
+  export function stripSchema(text: string, strip?: boolean): string;
 
-/**
- * @name safeUnique
- * @description Return safe, uncut name for unique key.
- * @param {string[]} [columnNames]
- * @param {string} [prefix='UQ']
- * @param {string} [separatorMinor='_']
- * @param {string} [separatorMajor='__']
- * @returns {string}
- */
-export function safeUnique(
-  columnNames: string[],
-  prefix?: string,
-  separatorMinor?: string,
-  separatorMajor?: string,
-): string;
-
-/**
- * @name UniqueColumns
- * @param {string[]} [fields]
- * @returns {ClassDecorator & PropertyDecorator}
- * @since 0.1.5
- */
-export function UniqueColumns(fields: string[]): ClassDecorator & PropertyDecorator;
-
-/**
- * @name IndexColumns
- * @param {string[]} [fields]
- * @returns {ClassDecorator & PropertyDecorator}
- * @since 0.1.6
- */
-export function IndexColumns(fields: string[]): ClassDecorator & PropertyDecorator;
+}
+declare module '@nestjsi/typeorm-pg' {
+  import main = require('@nestjsi/typeorm-pg/src/index');
+  export = main;
+}

@@ -74,7 +74,15 @@ function sha1Triplet(triplet: number, alpha: number, beta: number, gamma: number
 }
 
 function sha1AdditiveConstantForCurrentIteration(aConstant: number) {
-  return aConstant < 20 ? 1518500249 : aConstant < 40 ? 1859775393 : aConstant < 60 ? -1894007588 : -899497514;
+  if (aConstant < 40) {
+    return aConstant < 20 ? 1518500249 : 1859775393;
+  } else {
+    if (aConstant < 60) {
+      return aConstant < 20 ? 1518500249 : -1894007588;
+    } else {
+      return aConstant < 20 ? 1518500249 : -899497514;
+    }
+  }
 }
 
 function addSafe(alpha: number, beta: number) {
@@ -132,11 +140,6 @@ function rawStringToHexString(text: string) {
 }
 
 export function cryptSha1(text: string): string {
+  // crypto.createHash("sha1").update(text).digest("hex")
   return rawStringToHexString(sha1OfRawString(stringToRawUtf8String(text)));
 }
-
-// function cryptSha1(text: string): string {
-//   const hash = crypto.createHash("sha1");
-//   hash.update(text);
-//   return hash.digest("hex");
-// }

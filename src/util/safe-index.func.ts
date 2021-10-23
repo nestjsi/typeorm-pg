@@ -1,12 +1,12 @@
-import { safeConstraint } from "./safe-constraint";
+import { safeConstraint } from "./safe-constraint.func";
 
 /**
  * @name safeIndex
  * @description Return safe, uncut name for index key.
  * @param {string[]} [columnNames]
- * @param {string} [prefix='IDX']
- * @param {string} [separatorMinor='_']
- * @param {string} [separatorMajor='__']
+ * @param {string=} [prefix='IDX']
+ * @param {string=} [separatorMinor='_']
+ * @param {string=} [separatorMajor='__']
  * @returns {string}
  */
 export function safeIndex(

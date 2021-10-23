@@ -1,4 +1,4 @@
-import { stripSchema } from "./strip-schema";
+import { stripSchema } from "./strip-schema.func";
 
 export function stripPublic(text: string, strip = true): string {
   let strippedText = text.trim().normalize("NFC");

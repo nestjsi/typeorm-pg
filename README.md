@@ -4,8 +4,8 @@ TypeORM PostgreSQL declarations and utilities.
 
 [![NPM Version][npm-version-img]][npm-version-url]
 [![NPM Downloads][npm-downloads-img]][npm-downloads-url]
-
----
+[![TypeScript Typings][ts-img]][ts-url]
+[![Codacy Badge][codacy-img]][codacy-url]
 
 ## Examples
 
@@ -88,8 +88,14 @@ import {
 ---
 
 <!-- Badges -->
-
+[npm-version-img]: https://badgen.net/npm/v/@nestjsi/typeorm-pg?&icon=npm&label=npm&color=DD3636&v=
 [npm-version-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
-[npm-version-img]: https://badgen.net/npm/v/@nestjsi/typeorm-pg?&icon=npm&label=npm&color=DD3636
+
+[npm-downloads-img]: https://badgen.net/npm/dt/@nestjsi/typeorm-pg?&icon=terminal&label=downloads&color=009688&v=
 [npm-downloads-url]: https://npmjs.com/package/@nestjsi/typeorm-pg
-[npm-downloads-img]: https://badgen.net/npm/dt/@nestjsi/typeorm-pg?&icon=terminal&label=downloads&color=009688
+
+[ts-img]: https://badgen.net/npm/types/@nestjsi/typeorm-pg?&icon=typescript&label=types&color=1E90FF&v=
+[ts-url]: https://github.com/nestjsi/typeorm-pg/blob/main/dist/index.d.ts
+
+[codacy-img]: https://app.codacy.com/project/badge/Grade/b3458c991041406bbe85fdfd87498006
+[codacy-url]: https://www.codacy.com/gh/nestjsi/typeorm-pg/dashboard?&utm_source=github.com&amp;utm_medium=referral&amp;utm_content=nestjsi/typeorm-pg&amp;utm_campaign=Badge_Grade

@@ -2,12 +2,12 @@
  * @name textCaseCamel
  * @description Converts string into camelCase.
  * @param {string} [text]
- * @param {boolean=false} [firstCapital=false]
+ * @param {boolean=} [firstCapital=false]
  * @returns {string}
  */
 export function textCaseCamel(text: string, firstCapital: boolean = false): string {
   return text.replace(/^([A-Z])|[\s-_](\w)/g, function (match, p1, p2, offset) {
-    if (firstCapital === true && offset === 0) {
+    if (firstCapital && offset === 0) {
       return p1;
     }
     if (p2) {
