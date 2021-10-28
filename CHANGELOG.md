@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.1
+
+-   🐛 Fix package.json
+
 ## 0.2.0
 
 -   ➕ New constants: **PGSQL_MAX_IDENTIFIER_LENGTH**.

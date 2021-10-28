@@ -40,11 +40,11 @@
     "types": "./dist/index.d.ts"
   },
   "files": [
-    "./dist/index.cjs",
-    "./dist/index.cjs.map",
-    "./dist/index.d.ts",
-    "./dist/index.js",
-    "vdist/index.js.map"
+    "dist/index.cjs",
+    "dist/index.cjs.map",
+    "dist/index.d.ts",
+    "dist/index.js",
+    "dist/index.js.map"
   ],
   "homepage": "https://github.com/nestjsi/typeorm-pg#readme",
   "keywords": [
@@ -73,6 +73,6 @@
     "package:upgrade": "npx npm-check --update"
   },
   "type": "module",
-  "types": "./dist/index.d.ts",
-  "version": "0.2.0"
+  "types": "dist/index.d.ts",
+  "version": "0.2.1"
 }
