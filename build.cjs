@@ -1,7 +1,18 @@
+const { exec } = require("child_process");
+
+//---
+
 const esbuild = require("esbuild");
+
 const { Generator } = require("npm-dts");
 
-const { dependencies, peerDependencies } = require("./package.json");
+const { readFileToString, writeFile } = require("@hilesystem/local");
+
+//---
+
+const { dependencies, peerDependencies, name } = require("./package.json");
+
+//---
 
 const args = new Object(null);
 
@@ -65,6 +76,7 @@ const buildOptions = {
   platform: "neutral",
   sourcemap: "external",
   target: "node12.22.0",
+  tsconfig: "./tsconfig.build.json",
 };
 
 if ("minify" in args) {
@@ -79,13 +91,13 @@ if ("minify" in args) {
 async function mjs() {
   return new Promise((resolve) => {
     esbuild
-      .build({ ...buildOptions, ...{ format: "esm", outExtension: { ".js": ".js" } } })
+      .build({ ...buildOptions, ...{ format: "esm", outExtension: { ".js": ".mjs" } } })
       .then(() => {
         console.log("   🟣 ESM build completed             ✔️");
         resolve();
       })
       .catch((error) => {
-        console.warn(error);
+        console.log(error);
         process.exit(1);
       });
   });
@@ -96,31 +108,97 @@ async function cjs() {
     esbuild
       .build({ ...buildOptions, ...{ format: "cjs", outExtension: { ".js": ".cjs" } } })
       .then(() => {
-        console.log("   🟢 CommonJS build completed        ✔️");
+        console.log("   🟢 CommonJS .CJS build completed    ✔️");
         resolve();
       })
       .catch((error) => {
-        console.warn(error);
+        console.log(error);
         process.exit(2);
       });
   });
 }
 
-async function dts() {
+async function js() {
   return new Promise((resolve) => {
-    new Generator({
-      entry: "./src/index.ts",
-      output: "./dist/index.d.ts",
-    })
+    esbuild
+      .build({ ...buildOptions, ...{ format: "cjs", outExtension: { ".js": ".js" } } })
+      .then(() => {
+        console.log("   🟢 CommonJS .JS build completed     ✔️");
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        process.exit(3);
+      });
+  });
+}
+
+async function dtsOne() {
+  return new Promise((resolve) => {
+    new Generator(
+      {
+        entry: "./src/index.ts",
+        output: "./dist/index.d.ts",
+      },
+      false,
+      true,
+    )
       .generate()
       .then(() => {
         console.log("   🔵 TS declarations build completed ✔️");
         resolve();
       })
       .catch((error) => {
-        console.warn(error);
-        process.exit(3);
+        console.log(error);
+        process.exit(4);
       });
+  });
+}
+
+async function dts() {
+  return new Promise((resolve) => {
+    exec(
+      "node ./node_modules/typescript/lib/tsc --emitDeclarationOnly --outFile ./dist/index.d.ts",
+      (error, stdout, stderr) => {
+        if (error) {
+          console.log(error);
+          process.exit(5);
+        }
+        if (stderr) {
+          console.log(stderr);
+          process.exit(6);
+        }
+        exec("node ./node_modules/prettier/bin-prettier.js --write ./dist/index.d.ts", (error, stdout, stderr) => {
+          if (error) {
+            console.log(error);
+            process.exit(7);
+          }
+          if (stderr) {
+            console.log(stderr);
+            process.exit(8);
+          }
+          readFileToString("./dist/index.d.ts")
+            //
+            .then((data) => {
+              const newData = data.replace(/declare module "index" {/g, `declare module "${name}" {`);
+              writeFile("./dist/index.d.ts", newData)
+                //
+                .then(() => {
+                  console.log("   🔵 TS declarations build completed ✔️");
+                  resolve();
+                })
+                .catch((error) => {
+                  console.log(error);
+                  process.exit(9);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+              process.exit(10);
+            });
+        });
+      },
+    );
   });
 }
 
@@ -132,12 +210,19 @@ async function start() {
   });
 }
 
-Promise.all([start(), mjs(), cjs(), dts()])
+Promise.all([
+  //
+  start(),
+  mjs(),
+  cjs(),
+  js(),
+  dts(),
+])
   .then(() => {
     console.log("✅ Build completed");
     process.exit(0);
   })
   .catch((error) => {
-    console.warn(error);
-    process.exit(4);
+    console.log(error);
+    process.exit(99);
   });

@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.2
+
+-   📁 Add .mjs files, build .js files in CommonJS format
+
 ## 0.2.1
 
 -   🐛 Fix package.json
