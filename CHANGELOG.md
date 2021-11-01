@@ -2,6 +2,10 @@
 
 ---
 
+## 0.2.3
+
+-   🐛 Fix extracting table name from TypeORM
+
 ## 0.2.2
 
 -   📁 Add .mjs files, build .js files in CommonJS format

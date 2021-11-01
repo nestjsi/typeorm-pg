@@ -3,8 +3,9 @@ import { DefaultNamingStrategy, NamingStrategyInterface, Table } from "typeorm";
 import { PGSQL_MAX_IDENTIFIER_LENGTH } from "../constant/column.const";
 
 import { cryptSha1 } from "../util/crypt-sha1.func";
-import { stripPublic } from "../util/strip-public.func";
+import { extractTableName } from "../util/extract-table-name.func";
 import { safeConstraint } from "../util/safe-constraint.func";
+import { stripPublic } from "../util/strip-public.func";
 
 export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   public name: string = "SafeNamingStrategy";
@@ -27,7 +28,7 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
     stripPublicSchemaName: boolean = true,
     stripPathAndTableAttempt: boolean = true,
   ): string {
-    let tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
+    let tableName = stripPublic(extractTableName(tableOrName), stripPublicSchemaName);
     const maxLength = PGSQL_MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
     const columns = columnNames.map((name) => stripPublic(name, stripPublicSchemaName)).join("_");
     const indexName = `${nameStartsWith}__${tableName}__${columns}`;
@@ -64,7 +65,7 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
     stripPublicSchemaName: boolean = true,
     stripPathAndTableAttempt: boolean = true,
   ): string {
-    const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
+    const tableName = stripPublic(extractTableName(tableOrName), stripPublicSchemaName);
     const tablePath = stripPublic(referencedTablePath || "", stripPublicSchemaName);
     const foreignKeyName = columnNames.reduce(
       (name: string, column: string) =>
@@ -104,7 +105,7 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
     stripPublicSchemaName: boolean = true,
     stripPathAndTableAttempt: boolean = true,
   ): string {
-    let tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
+    let tableName = stripPublic(extractTableName(tableOrName), stripPublicSchemaName);
     const maxLength = PGSQL_MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
     const columns = columnNames.map((name) => stripPublic(name, stripPublicSchemaName)).join("_");
     const primaryName = `${nameStartsWith}__${tableName}__${columns}`;
@@ -137,7 +138,7 @@ export class SafeNamingStrategy extends DefaultNamingStrategy implements NamingS
     stripPublicSchemaName: boolean = true,
     stripPathAndTableAttempt: boolean = true,
   ): string {
-    const tableName = stripPublic(String(tableOrName), stripPublicSchemaName);
+    const tableName = stripPublic(extractTableName(tableOrName), stripPublicSchemaName);
     const maxLength = PGSQL_MAX_IDENTIFIER_LENGTH - nameStartsWith.length;
     const columns = columnNames.map((name) => stripPublic(name, stripPublicSchemaName)).join("_");
     const relationConstraintName = `${nameStartsWith}__${tableName}__${columns}`;

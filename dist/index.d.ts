@@ -248,11 +248,9 @@ declare module "constant/column.const" {
 declare module "util/crypt-sha1.func" {
   export function cryptSha1(text: string): string;
 }
-declare module "util/strip-schema.func" {
-  export function stripSchema(text: string, strip?: boolean): string;
-}
-declare module "util/strip-public.func" {
-  export function stripPublic(text: string, strip?: boolean): string;
+declare module "util/extract-table-name.func" {
+  import { Table } from "typeorm";
+  export function extractTableName(tableOrName: Table | string): string;
 }
 declare module "util/camel.func" {
   /**
@@ -283,6 +281,12 @@ declare module "util/safe-constraint.func" {
    * @returns {string}
    */
   export function safeConstraint(name: string, separatorMinor?: string, separatorMajor?: string): string;
+}
+declare module "util/strip-schema.func" {
+  export function stripSchema(text: string, strip?: boolean): string;
+}
+declare module "util/strip-public.func" {
+  export function stripPublic(text: string, strip?: boolean): string;
 }
 declare module "class/safe-naming-strategy.class" {
   import { DefaultNamingStrategy, NamingStrategyInterface, Table } from "typeorm";
@@ -510,6 +514,7 @@ declare module "@nestjsi/typeorm-pg" {
   export * from "decorator/index-columns.decorator";
   export * from "decorator/unique-columns.decorator";
   export * from "util/crypt-sha1.func";
+  export * from "util/extract-table-name.func";
   export * from "util/safe-constraint.func";
   export * from "util/safe-index.func";
   export * from "util/safe-unique.func";
